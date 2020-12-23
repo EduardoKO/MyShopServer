@@ -5,7 +5,7 @@ import AppError from "@shared/errors/AppError";
 
 interface IRequest {
   id: string;
-  amount: string;
+  amount: number;
 }
 
 @injectable()
@@ -16,17 +16,17 @@ class UpdateProductsService {
   ) {}
 
   public async execute({id, amount}: IRequest): Promise<Product> {
-    const product = await this.productsRepository.findById(id, amount);
+    const product = await this.productsRepository.findById(id);
 
-    if(!amount) {
+    if(!amount || amount === 0 && !id) {
       throw new AppError('Amount is required to update', 400)
     }
 
-    if(!product) {
-      throw new AppError('Product not found', 400)
-    }
+    const formattedAmount = amount / product.box;
 
-    product.amount = amount;
+    console.log(formattedAmount);
+
+    product.amount = product.amount - amount;
 
     return this.productsRepository.save(product);
   }

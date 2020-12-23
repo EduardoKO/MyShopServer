@@ -35,12 +35,12 @@ export class createProduct1607041012074 implements MigrationInterface {
               isNullable: false
             },
             {
-              name:'lote',
+              name:'box',
               type:'varchar',
-              isNullable: false
+              isNullable:false
             },
             {
-              name:'value',
+              name:'lote',
               type:'varchar',
               isNullable: false
             },

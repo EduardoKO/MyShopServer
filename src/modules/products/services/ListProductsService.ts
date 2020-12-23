@@ -14,12 +14,8 @@ class ListProductsService {
     private productsRepository: IProductsRepository
   ) {}
 
-  public async execute(name: string): Promise<Product> {
+  public async execute(name: string): Promise<Product | undefined> {
     const product = await this.productsRepository.findByName(name);
-
-    if(!product) {
-      throw new AppError('Name is required', 400)
-    }
 
     return product;
   }

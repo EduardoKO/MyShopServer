@@ -1,16 +1,8 @@
 import { injectable, inject } from 'tsyringe';
 import IProductsRepository from '../repositories/IProductsRepository';
+import Product from '../infra/typeorm/entities/Product';
+import ICreateProductsDTO from '../dtos/ICreateProductsDTO';
 import AppError from '@shared/errors/AppError';
-
-interface IRequest { 
-  family: string;
-  name: string; 
-  size: string;
-  lote:string;
-  amount: string;
-  value: string;
-  joint: string; 
-}
 
 @injectable()
 class CreateProductsService {
@@ -18,20 +10,19 @@ class CreateProductsService {
     @inject('ProductsRepository')
     private productsRepository: IProductsRepository) {}
 
-  public async execute({family, name, size, lote, amount, value, joint}: IRequest): Promise<void> {
-    if(!family || !name || !size || !lote || !amount || !value || !joint) {
-      throw new AppError('All fields required', 400)
-    }
-
-    await this.productsRepository.create({
+  public async execute({family, name, size, box, lote, amount, joint}: ICreateProductsDTO): Promise<Product> {
+    
+    const product = await this.productsRepository.create({
       family,
       name,
       size,
+      box,
       lote,
       amount,
-      value,
       joint
-    })
+    });
+
+    return product
   }
 }
 
